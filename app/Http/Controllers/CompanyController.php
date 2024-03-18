@@ -11,8 +11,8 @@ class CompanyController extends Controller
 {
     public function getCompany()
     {
+        DB::beginTransaction();
         try {
-            DB::beginTransaction();
             $response = Company::all()->first();
             DB::commit();
             return Response::getJsonResponse('success', $response, 201);

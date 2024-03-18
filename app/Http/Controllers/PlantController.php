@@ -24,6 +24,7 @@ class PlantController extends Controller
             if ($request->hasFile('file')){
                 $path = $request->file('file')->storeAs('public/files', $request->file('file')->getClientOriginalName());
             }
+
             $plant = Plant::create([
                 'name' => $request->name,
                 'scientific_name' => $request->scientific_name,
@@ -89,6 +90,7 @@ class PlantController extends Controller
     }
 
     public function updatePlantLike( $id){
+        DB::beginTransaction();
         try {
             $plantLike = PlantLike::where('plant_id', $id)->first();
             if ($plantLike) {
