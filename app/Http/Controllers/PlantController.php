@@ -65,10 +65,18 @@ class PlantController extends Controller
             return ApiExceptionManager::handleException($e, func_get_args(), $e->getMessage());
         }
     }
-
+    public function getAllPlants()
+    {
+        try {
+            return Plant::all();
+        } catch (\Exception $e) {
+            return ApiExceptionManager::handleException($e, func_get_args(), $e->getMessage());
+        }
+    }
     public function getPlants(Request $request) {
         try {
-            return Plant::where(function($query) use($request) {
+            return Plant::where('active', true)
+                ->where(function($query) use($request) {
                 $query->whereHas('indication', function($subQuery) use($request) {
                     $subQuery->whereIn('name', array_column($request->symptoms, 'name'));
                 })
